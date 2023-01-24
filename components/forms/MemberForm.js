@@ -39,61 +39,63 @@ function MemberForm({ obj }) {
     e.preventDefault();
     if (obj.firebaseKey) {
       updateMember(formInput)
-        .then(() => router.push(`/members/${obj.firebaseKey}`));
+        .then(() => router.push(`/member/${obj.firebaseKey}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
       createMember(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
-        updateMember(patchPayload.firebaseKey).then(() => router.push(`/members/${obj.firebaseKey}`));
+        updateMember(patchPayload.firebaseKey).then(() => router.push(`/member/${obj.firebaseKey}`));
       });
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Member</h2>
-      <FloatingLabel controlId="floatinginput1" label="Member Image" className="mb-3">
-        <Form.Control
-          type="url"
-          placeholder="Enter an image url"
-          name="image"
-          value={formInput.image}
-          onChange={handleChange}
-          required
-        />
-      </FloatingLabel>
-      <FloatingLabel controlId="floatinginput1" label="Member First Name" className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Enter first name"
-          name="first_name"
-          value={formInput.first_name}
-          onChange={handleChange}
-          required
-        />
-      </FloatingLabel>
-      <FloatingLabel controlId="floatinginput1" label="Member Last Name" className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Enter last name"
-          name="image"
-          value={formInput.last_name}
-          onChange={handleChange}
-          required
-        />
-      </FloatingLabel>
-      <FloatingLabel controlId="floatinginput1" label="Member Role" className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Enter a role"
-          name="role"
-          value={formInput.role}
-          onChange={handleChange}
-          required
-        />
-      </FloatingLabel>
-      <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Member</Button>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Member</h2>
+        <FloatingLabel controlId="floatinginput1" label="Member Image" className="mb-3">
+          <Form.Control
+            type="url"
+            placeholder="Enter an image url"
+            name="image"
+            value={formInput.image}
+            onChange={handleChange}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel controlId="floatinginput1" label="Member First Name" className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter first name"
+            name="first_name"
+            value={formInput.first_name}
+            onChange={handleChange}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel controlId="floatinginput1" label="Member Last Name" className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter last name"
+            name="image"
+            value={formInput.last_name}
+            onChange={handleChange}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel controlId="floatinginput1" label="Member Role" className="mb-3">
+          <Form.Control
+            type="text"
+            placeholder="Enter a role"
+            name="role"
+            value={formInput.role}
+            onChange={handleChange}
+            required
+          />
+        </FloatingLabel>
+        <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} Member</Button>
+      </Form>
+    </>
   );
 }
 

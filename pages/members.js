@@ -9,6 +9,7 @@ export default function ShowMembers() {
 
   useEffect(() => {
     getMembers(user.uid).then(setMembers);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getAllMembers = () => {

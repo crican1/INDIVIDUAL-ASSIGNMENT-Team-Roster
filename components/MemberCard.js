@@ -15,13 +15,14 @@ function MemberCard({ memberObj, onUpdate }) {
     <Card style={{ width: '18rem', margin: '10px' }}>
       <Card.Img variant="top" src={memberObj.image} alt={memberObj.first_name} style={{ height: '400px' }} />
       <Card.Body>
-        <Card.Title>{memberObj.first_name}</Card.Title>
-        <Card.Title>{memberObj.last_name}</Card.Title>
-        {/* DYNAMIC LINK TO VIEW THE BOOK DETAILS  */}
+        <Card.Title>{memberObj.team}</Card.Title>
+        <Card.Text>{memberObj.first_name} {memberObj.last_name}</Card.Text>
+        <Card.Text>{memberObj.role}</Card.Text>
+        {/* DYNAMIC LINK TO VIEW THE MEMBER DETAILS  */}
         <Link href={`/member/${memberObj.firebaseKey}`} passHref>
           <Button variant="primary" className="m-2">VIEW</Button>
         </Link>
-        {/* DYNAMIC LINK TO EDIT THE BOOK DETAILS  */}
+        {/* DYNAMIC LINK TO EDIT THE MEMBER DETAILS  */}
         <Link href={`/member/edit/${memberObj.firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
@@ -36,6 +37,7 @@ function MemberCard({ memberObj, onUpdate }) {
 MemberCard.propTypes = {
   memberObj: PropTypes.shape({
     image: PropTypes.string,
+    team: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     role: PropTypes.string,

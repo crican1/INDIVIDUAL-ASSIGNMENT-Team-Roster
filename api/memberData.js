@@ -1,52 +1,77 @@
-import axios from 'axios';
 import { clientCredentials } from '../utils/client';
 
-const dbUrl = clientCredentials.databaseURL;
+const endpoint = clientCredentials.databaseURL;
 
 // GET ALL MEMBERS
 const getMembers = (uid) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/members.json?orderBy="uid"&equalTo="${uid}"`)
-    .then((response) => {
-      if (response.data) {
-        resolve(Object.values(response.data));
+  fetch(`${endpoint}/members.json?orderBy="uid"&equalTo="${uid}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data) {
+        resolve(Object.values(data));
       } else {
         resolve([]);
       }
     })
-    .catch((error) => reject(error));
+    .catch(reject);
 });
 
-const createMember = (memberObj) => new Promise((resolve, reject) => {
-  axios.post(`${dbUrl}/members.json`, memberObj)
-    .then((response) => {
-      const payload = { firebaseKey: response.data.name };
-      axios.patch(`${dbUrl}/members/${response.data.name}.json`, payload)
-        .then(resolve);
-    }).catch(reject);
+const createMember = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/members.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
 });
 
 // GET SINGLE MEMBER
 const getSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/members/${firebaseKey}.json`)
-    .then((response) => resolve(response.data))
+  fetch(`${endpoint}/members/${firebaseKey}.json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
     .catch(reject);
 });
 
 // DELETE MEMBER
 const deleteSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/members/${firebaseKey}.json`)
-    .then((response) => resolve(response.data))
-    .catch((error) => reject(error));
+  fetch(`${endpoint}/authors/${firebaseKey}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve((data)))
+    .catch(reject);
 });
 
 // UPDATE MEMBER
-const updateMember = (authorObj) => new Promise((resolve, reject) => {
-  axios.post(`${dbUrl}/authors.json`, authorObj)
-    .then((response) => {
-      const payload = { firebaseKey: response.data.name };
-      axios.patch(`${dbUrl}/members/${response.data.name}.json`, payload)
-        .then(resolve);
-    }).catch(reject);
+const updateMember = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/authors/${payload.firebaseKey}.json`, {
+    method: 'Patch',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
 });
 
 export {
