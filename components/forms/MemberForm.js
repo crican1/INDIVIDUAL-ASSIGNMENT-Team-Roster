@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap/Button';
-import { FloatingLabel } from 'react-bootstrap/FloatingLabel';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import { Button, FloatingLabel } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { createMember, updateMember } from '../../api/memberData';
 
@@ -101,11 +99,11 @@ function MemberForm({ obj }) {
 
 MemberForm.propTypes = {
   obj: PropTypes.shape({
-    image: propTypes.string,
-    first_name: propTypes.string,
-    last_name: propTypes.string,
-    role: propTypes.string,
-    firebaseKey: propTypes.string,
+    image: PropTypes.string,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    role: PropTypes.string,
+    firebaseKey: PropTypes.string,
   }),
 };
 
