@@ -1,8 +1,35 @@
-// import { getSingleMember, deleteThisMember } from "./memberData";
+import { getSingleMember } from './memberData';
+import { deleteSingleTeam, getSingleTeam, getTeamMembers } from './teamData';
 
-// const ViewMemberDetails = (memberFirebaseKey) => new Promise((resolve, reject) => {
-//   getSingleMember(memberFirebaseKey)
-//   .then((memberObject) => {
+const viewMemberDetails = (memberFirebaseKey) => new Promise((resolve, reject) => {
+  getSingleMember(memberFirebaseKey)
+    .then((memberObject) => {
+      getSingleTeam(memberObject.team_id)
+        .then((teamObject) => {
+          resolve({ teamObject, ...memberObject });
+        });
+    }).catch((error) => reject(error));
+});
 
-//   })
-// })
+const viewTeamDetails = (teamFirebaseKey) => new Promise((resolve, reject) => {
+  Promise.all([getSingleTeam(teamFirebaseKey), getTeamMembers(teamFirebaseKey)])
+    .then(([teamObject, teamMemberArray]) => {
+      resolve({ ...teamObject, members: teamMemberArray });
+    }).catch((error) => reject(error));
+});
+
+const deleteTeamMembers = (teamId) => new Promise((resolve, reject) => {
+  getTeamMembers(teamId).then((membersArray) => {
+    const deleteMemberPromises = membersArray.map((member) => deleteSingleTeam(member.firebaseKey));
+
+    Promise.all(deleteMemberPromises).then(() => {
+      deleteSingleTeam(teamId).then(resolve);
+    });
+  }).catch((error) => reject(error));
+});
+
+export {
+  viewMemberDetails,
+  viewTeamDetails,
+  deleteTeamMembers,
+};

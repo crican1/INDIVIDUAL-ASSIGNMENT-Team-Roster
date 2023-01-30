@@ -2,9 +2,8 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
-// GET ALL MEMBERS
-const getMembers = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members.json?orderBy="uid"&equalTo="${uid}"`, {
+const getTeams = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/teams.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -21,8 +20,8 @@ const getMembers = (uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const createMember = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members.json`, {
+const createTeam = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/teams.json`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,9 +33,8 @@ const createMember = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// GET SINGLE MEMBER
-const getSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members/${firebaseKey}.json`, {
+const getSingleTeam = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/teams/${firebaseKey}.json`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -47,9 +45,8 @@ const getSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// DELETE MEMBER
-const deleteSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members/${firebaseKey}.json`, {
+const deleteSingleTeam = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/teams/${firebaseKey}.json`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -60,9 +57,8 @@ const deleteSingleMember = (firebaseKey) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// UPDATE MEMBER
-const updateMember = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members/${payload.firebaseKey}.json`, {
+const updateTeam = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/teams/${payload.firebaseKey}.json`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -74,10 +70,23 @@ const updateMember = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getTeamMembers = (teamFirebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/members.json?orderBy="team_name"&equalTo="${teamFirebaseKey}".json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
-  getMembers,
-  createMember,
-  getSingleMember,
-  deleteSingleMember,
-  updateMember,
+  getTeams,
+  createTeam,
+  getSingleTeam,
+  deleteSingleTeam,
+  updateTeam,
+  getTeamMembers,
 };

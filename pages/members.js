@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { getMembers } from '../api/memberData';
 import MemberCard from '../components/MemberCard';
@@ -18,6 +19,10 @@ export default function ShowMembers() {
 
   return (
     <div>
+      <Head>
+        <title>Members</title>
+      </Head>
+      <h1>Members</h1>
       {members.map((member) => (
         <MemberCard key={member.firebaseKey} memberObj={member} onUpdate={getAllMembers} />
       ))}

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Link from 'next/link';
+import { deleteSingleMember } from '../api/memberData';
 
 function MemberCard({ memberObj, onUpdate }) {
   const deleteThisMember = () => {
     if (window.confirm(`Delete ${memberObj.first_name}${memberObj.last_name}?`)) {
-      deleteThisMember(memberObj.firebaseKey).then(() => onUpdate());
+      deleteSingleMember(memberObj.firebaseKey).then(() => onUpdate());
     }
   };
 
@@ -18,11 +19,9 @@ function MemberCard({ memberObj, onUpdate }) {
         <Card.Title>{memberObj.team}</Card.Title>
         <Card.Text>{memberObj.first_name} {memberObj.last_name}</Card.Text>
         <Card.Text>{memberObj.role}</Card.Text>
-        {/* DYNAMIC LINK TO VIEW THE MEMBER DETAILS  */}
         <Link href={`/member/${memberObj.firebaseKey}`} passHref>
           <Button variant="primary" className="m-2">VIEW</Button>
         </Link>
-        {/* DYNAMIC LINK TO EDIT THE MEMBER DETAILS  */}
         <Link href={`/member/edit/${memberObj.firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
