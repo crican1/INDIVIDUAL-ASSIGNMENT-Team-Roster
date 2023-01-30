@@ -18,15 +18,14 @@ export default function ShowTeams() {
   }, []);
 
   return (
-    <>
-      <div className="d-flex flex-wrap text-center my-4" style={{ marginTop: '100px' }}>
-        <Head>
-          <title>Teams</title>
-        </Head>
-        {teams.map((team) => (
-          <TeamCard key={team.firebaseKey} teamObj={team} onUpdate={getAllTheTeams} />
-        ))}
-      </div>
-    </>
+    <div>
+      <Head>
+        <title>Teams</title>
+      </Head>
+      <h1>Teams</h1>
+      {teams.map((team) => (
+        <TeamCard key={team.firebaseKey} teamObj={team} onUpdate={getAllTheTeams} />
+      ))}
+    </div>
   );
 }

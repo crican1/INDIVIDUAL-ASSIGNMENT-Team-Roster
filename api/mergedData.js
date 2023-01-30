@@ -13,8 +13,8 @@ const viewMemberDetails = (memberFirebaseKey) => new Promise((resolve, reject) =
 
 const viewTeamDetails = (teamFirebaseKey) => new Promise((resolve, reject) => {
   Promise.all([getSingleTeam(teamFirebaseKey), getTeamMembers(teamFirebaseKey)])
-    .then(([teamObject, teamMemberArray]) => {
-      resolve({ ...teamObject, members: teamMemberArray });
+    .then(([teamObject, membersArray]) => {
+      resolve({ ...teamObject, members: membersArray });
     }).catch((error) => reject(error));
 });
 

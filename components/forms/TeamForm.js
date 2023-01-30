@@ -2,8 +2,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { createTeam, updateTeam } from '../../api/teamData';
+import Head from 'next/head';
 import { useAuth } from '../../utils/context/authContext';
+import { createTeam, updateTeam } from '../../api/teamData';
 
 const initialState = {
   image: '',
@@ -32,7 +33,7 @@ function TeamForm({ obj }) {
     e.preventDefault();
     if (obj.firebaseKey) {
       updateTeam(formInput)
-        .then(() => router.push(`/team/${obj.firebaseKey}`));
+        .then(() => router.push('/teams'));
     } else {
       const payload = { ...formInput, uid: user.uid };
       createTeam(payload).then(() => {
@@ -43,6 +44,9 @@ function TeamForm({ obj }) {
 
   return (
     <>
+      <Head>
+        <title>Create Team</title>
+      </Head>
       <Form onSubmit={handleSubmit}>
         <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Create'} Team</h2>
         <FloatingLabel controlId="floatinginput1" label="Team Image" className="mb-3">

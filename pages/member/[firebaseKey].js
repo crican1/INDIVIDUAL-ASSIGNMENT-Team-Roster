@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-// import Image from 'next/image';
 import { viewMemberDetails } from '../../api/mergedData';
 
 export default function ViewMember() {

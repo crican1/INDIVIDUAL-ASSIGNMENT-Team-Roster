@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { Button, FloatingLabel } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/context/authContext';
 import { createMember, updateMember } from '../../api/memberData';
-import { getTeams } from '../../api/teamData';
+// import { getTeams } from '../../api/teamData';
 
 const initialState = {
   image: '',
   first_name: '',
   last_name: '',
   role: '',
-  team: '',
-  firebaseKey: '',
+  team_id: '',
 };
 
 function MemberForm({ obj }) {
   const [formInput, setFormInput] = useState(initialState);
-  const [teams, setTeams] = useState([]);
-  const { user } = useAuth;
+  // const [teams, setTeams] = useState([]);
   const router = useRouter();
+  const { user } = useAuth;
 
   useEffect(() => {
-    getTeams(user.uid).then(setTeams);
+    // getTeams(user).then(setTeams);
     if (obj.firebaseKey) setFormInput(obj);
-  }, [obj, user]);
+  }, [obj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,14 +41,20 @@ function MemberForm({ obj }) {
         .then(() => router.push('/members'));
     } else {
       const payload = { ...formInput, uid: user.uid };
-      createMember(payload).then(() => {
-        router.push('/members');
+      createMember(payload).then(({ name }) => {
+        const patchPayload = { firebaseKey: name };
+        updateMember(patchPayload).then(() => {
+          router.push('/members');
+        });
       });
     }
   };
 
   return (
     <>
+      <Head>
+        <title>Create Member</title>
+      </Head>
       <Form onSubmit={handleSubmit}>
         <h2 className="text-white mt-5">{obj.firebaseKey ? 'Update' : 'Add'} A Member</h2>
         <FloatingLabel controlId="floatinginput1" label="Member Image" className="mb-3">
@@ -92,13 +97,13 @@ function MemberForm({ obj }) {
             required
           />
         </FloatingLabel>
-        <FloatingLabel controlId="floatingSelect" label="Team">
+        {/* <FloatingLabel controlId="floatingSelect" label="Team">
           <Form.Select
             aria-label="Team"
             name="team_id"
             onChange={handleChange}
             className="mb-3"
-            value={obj.team_id}
+            value={formInput.team_id}
             required
           >
             <option value="">Select a Team</option>
@@ -113,7 +118,7 @@ function MemberForm({ obj }) {
             ))
           }
           </Form.Select>
-        </FloatingLabel>
+        </FloatingLabel> */}
         <Button type="submit">{obj.firebaseKey ? 'Update' : 'Add'} A Member</Button>
       </Form>
     </>

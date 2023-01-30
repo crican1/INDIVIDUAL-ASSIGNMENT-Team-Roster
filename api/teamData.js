@@ -71,14 +71,14 @@ const updateTeam = (payload) => new Promise((resolve, reject) => {
 });
 
 const getTeamMembers = (teamFirebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/members.json?orderBy="team_name"&equalTo="${teamFirebaseKey}".json`, {
+  fetch(`${endpoint}/members.json?orderBy="team_id"&equalTo="${teamFirebaseKey}"`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'applications/json',
     },
   })
     .then((response) => response.json())
-    .then(resolve)
+    .then((data) => resolve(Object.values(data)))
     .catch(reject);
 });
 
