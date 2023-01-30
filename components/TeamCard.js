@@ -17,11 +17,11 @@ function TeamCard({ teamObj, onUpdate }) {
       <Card.Img variant="top" src={teamObj.image} alt={teamObj.team_name} style={{ height: '400px' }} />
       <Card.Body>
         <Card.Title>{teamObj.team_name}</Card.Title>
-        {/* DYNAMIC LINK TO VIEW THE MEMBER DETAILS  */}
+        {/* DYNAMIC LINK TO VIEW THE TEAM DETAILS  */}
         <Link href={`/team/${teamObj.firebaseKey}`} passHref>
           <Button variant="primary" className="m-2">VIEW</Button>
         </Link>
-        {/* DYNAMIC LINK TO EDIT THE MEMBER DETAILS  */}
+        {/* DYNAMIC LINK TO EDIT THE TEAM DETAILS  */}
         <Link href={`/team/edit/${teamObj.firebaseKey}`} passHref>
           <Button variant="info">EDIT</Button>
         </Link>
