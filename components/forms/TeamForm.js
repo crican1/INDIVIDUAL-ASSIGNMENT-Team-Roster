@@ -7,23 +7,30 @@ import { useAuth } from '../../utils/context/authContext';
 import { createTeam, updateTeam } from '../../api/teamData';
 
 const initialState = {
+  // THIS IS THE WAY THE FORM WILL SHOP UP WHEN FIRST NAVIGATED TO.
   image: '',
   team_name: '',
   firebaseKey: '',
 };
 
 function TeamForm({ obj }) {
+  // FIRST VALUE IS THE CURRENT STATE. SECOND VALUE IS WHAT CHANGES AND GETS UPDATED.
+
   const [formInput, setFormInput] = useState(initialState);
   const router = useRouter();
-  const { user } = useAuth;
+  const { user } = useAuth();
 
   useEffect(() => {
     if (obj.firebaseKey) setFormInput(obj);
+
+    // WHENEVER ONE OF THESE CHANGES THE HOOK RERUNS
   }, [obj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormInput((prevState) => ({
+
+      // TAKES WHATEVER THE PREVIOUS VALUE WAS.
       ...prevState,
       [name]: value,
     }));
@@ -31,10 +38,13 @@ function TeamForm({ obj }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // IF YOU ARE UPDATING AN EXISTING OBJECT.
     if (obj.firebaseKey) {
       updateTeam(formInput)
         .then(() => router.push('/teams'));
     } else {
+      // IF YOU ARE ENTERING A NEW OBJECT.
       const payload = { ...formInput, uid: user.uid };
       createTeam(payload).then(() => {
         router.push('/teams');
@@ -75,6 +85,7 @@ function TeamForm({ obj }) {
   );
 }
 
+// MAKES SURE THE VALUES BEING PASSED ARE THE CORRECT TYPE.
 TeamForm.propTypes = {
   obj: PropTypes.shape({
     image: PropTypes.string,
