@@ -8,6 +8,7 @@ import { createMember, updateMember } from '../../api/memberData';
 // import { getTeams } from '../../api/teamData';
 
 const initialState = {
+  // THIS IS THE WAY THE FORM WILL SHOP UP WHEN FIRST NAVIGATED TO.
   image: '',
   first_name: '',
   last_name: '',
@@ -16,18 +17,24 @@ const initialState = {
 };
 
 function MemberForm({ obj }) {
+  // FIRST VALUE IS THE CURRENT STATE. SECOND VALUE IS WHAT CHANGES AND GETS UPDATED.
+
   const [formInput, setFormInput] = useState(initialState);
   // const [teams, setTeams] = useState([]);
   const router = useRouter();
-  const { user } = useAuth;
+  const { user } = useAuth();
 
   useEffect(() => {
     // getTeams(user).then(setTeams);
     if (obj.firebaseKey) setFormInput(obj);
-  }, [obj]);
+
+    // WHENEVER ONE OF THESE CHANGES THE HOOK RERUNS.
+  }, [obj, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // TAKES WHAT EVER THE PREVIOUS VALUE WAS.
     setFormInput((prevState) => ({
       ...prevState,
       [name]: value,
@@ -36,10 +43,13 @@ function MemberForm({ obj }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // IF YOU ARE UPDATING AN EXISTING OBJECT.
     if (obj.firebaseKey) {
       updateMember(formInput)
         .then(() => router.push('/members'));
     } else {
+      // IF YOU ARE ENTERING A NEW OBJECT.
       const payload = { ...formInput, uid: user.uid };
       createMember(payload).then(({ name }) => {
         const patchPayload = { firebaseKey: name };
@@ -97,13 +107,13 @@ function MemberForm({ obj }) {
             required
           />
         </FloatingLabel>
-        {/* <FloatingLabel controlId="floatingSelect" label="Team">
+        {/* <FloatingLabel controlId="floatingSelect" label="Author">
           <Form.Select
             aria-label="Team"
             name="team_id"
             onChange={handleChange}
             className="mb-3"
-            value={formInput.team_id}
+            value={formInput.team_id} // FIXME: modify code to remove error
             required
           >
             <option value="">Select a Team</option>
@@ -119,12 +129,13 @@ function MemberForm({ obj }) {
           }
           </Form.Select>
         </FloatingLabel> */}
-        <Button type="submit">{obj.firebaseKey ? 'Update' : 'Add'} A Member</Button>
+        <Button type="submit">{obj.firebaseKey ? 'Update' : 'Create'} A Member</Button>
       </Form>
     </>
   );
 }
 
+// MAKES SURE THE VALUES BEING PASSED ARE THE CORRECT TYPE.
 MemberForm.propTypes = {
   obj: PropTypes.shape({
     image: PropTypes.string,
